@@ -10,7 +10,7 @@
                     <option value="ask">问答</option>
                     <option value="job">招聘</option>
                 </select>
-                <a class="add-btn" @click="addTopic">发布</a>
+                <!-- <a class="add-btn" @click="addTopic">发布</a> -->
             </div>
             <div class="line">
                 <input class="add-title" v-model="topic.title"

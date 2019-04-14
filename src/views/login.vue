@@ -4,10 +4,16 @@
         </nv-head>
         <section class="page-body">
             <div class="label">
-                <input class="txt" type="text" placeholder="Access Token" v-model="token" maxlength="36">
+                <input class="txt" type="text" placeholder="请输入账号" maxlength="36">
+            </div>
+            <div class="label">
+                <input class="txt" type="text" placeholder="请输入密码" maxlength="36">
             </div>
             <div class="label">
                 <a class="button" @click="logon">登录</a>
+            </div>
+            <div class="label label--register" @click="goRegister">
+                注册
             </div>
         </section>
     </div>
@@ -20,15 +26,11 @@
     export default {
         data() {
             return {
-                token: ''
+                token: 'e052dce6-9b8e-4c04-b38d-46f25166c050'
             };
         },
         methods: {
             logon() {
-                if (this.token === '') {
-                    this.$alert('令牌格式错误,应为36位UUID字符串');
-                    return false;
-                }
                 $.ajax({
                     type: 'POST',
                     url: 'https://cnodejs.org/api/v1/accesstoken',
@@ -55,6 +57,11 @@
                         this.$alert(error.error_msg);
                     }
                 });
+            },
+            goRegister() {
+                this.$router.push({
+                    path: '/register'
+                });
             }
         },
         components: {
@@ -74,6 +81,10 @@
             position: relative;
             left: 0;
             top: 0;
+            &--register {
+                color: #42b983;
+                text-align: center;
+            }
             .txt {
                 padding: 12px 0;
                 border: none;

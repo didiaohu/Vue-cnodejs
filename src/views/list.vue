@@ -47,6 +47,9 @@
     import utils from '../libs/utils.js';
     import nvHead from '../components/header.vue';
     import nvTop from '../components/backtotop.vue';
+    import {
+        mapGetters
+    } from 'vuex';
 
     export default {
         filters: {
@@ -68,7 +71,18 @@
                 searchDataStr: ''
             };
         },
+        computed: {
+            ...mapGetters({
+                userInfo: 'getUserInfo'
+            })
+        },
         mounted() {
+            if (!this.userInfo.loginname) {
+                this.$router.push({
+                    path: '/login'
+                });
+                return;
+            }
             if (this.$route.query && this.$route.query.tab) {
                 this.searchKey.tab = this.$route.query.tab;
             }

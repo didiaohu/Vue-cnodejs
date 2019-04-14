@@ -55,7 +55,7 @@
                                         :class="{'uped':isUps(item.ups)}"
                                         @click="upReply(item)">&#xe608;</span>
                                     {{item.ups.length}}
-                                    <span class="iconfont icon" @click="addReply(item.id)">&#xe609;</span>
+                                    <!-- <span class="iconfont icon" @click="addReply(item.id)">&#xe609;</span> -->
                                 </span>
                             </div>
                         </section>
@@ -100,7 +100,8 @@
                 topic: {}, // 主题
                 noData: false,
                 topicId: '',
-                curReplyId: ''
+                curReplyId: '',
+                isTrue: false
             };
         },
         computed: {
@@ -157,29 +158,35 @@
                         }
                     });
                 } else {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'https://cnodejs.org/api/v1/reply/' + item.id + '/ups',
-                        data: {
-                            accesstoken: this.userInfo.token
-                        },
-                        dataType: 'json',
-                        success: (res) => {
-                            if (res.success) {
-                                if (res.action === 'down') {
-                                    let index = $.inArray(this.userInfo.userId, item.ups);
-                                    item.ups.splice(index, 1);
-                                } else {
-                                    item.ups.push(this.userInfo.userId);
-                                }
-                            }
-                        },
-                        error: (res) => {
-                            let error = JSON.parse(res.responseText);
-                            this.$alert(error.error_msg);
-                            return false;
-                        }
-                    });
+                    let index = $.inArray(this.userInfo.userId, item.ups);
+                    if (this.isTrue) {
+                        item.ups.splice(index, 1);
+                    } else {
+                        item.ups.push(this.userInfo.userId);
+                    }
+                    this.isTrue = !this.isTrue;
+                    // $.ajax({
+                    //     type: 'POST',
+                    //     url: 'https://cnodejs.org/api/v1/reply/' + item.id + '/ups',
+                    //     data: {
+                    //         accesstoken: this.userInfo.token
+                    //     },
+                    //     dataType: 'json',
+                    //     success: (res) => {
+                    //         if (res.success) {
+                    //             if (res.action === 'down') {
+                    //                 item.ups.splice(index, 1);
+                    //             } else {
+                    //                 item.ups.push(this.userInfo.userId);
+                    //             }
+                    //         }
+                    //     },
+                    //     error: (res) => {
+                    //         let error = JSON.parse(res.responseText);
+                    //         this.$alert(error.error_msg);
+                    //         return false;
+                    //     }
+                    // });
                 }
             }
         },
